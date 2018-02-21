@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import math
 import torch.utils.model_zoo as model_zoo
+from copy import deepcopy
 
 __all__ = ['Bottleneck', 'ResNet', 'resnet50', 'resnet101', 'resnet152']
 
@@ -157,7 +158,7 @@ def resnet50(args):
         pretrained_dict = torch.load(args.pretrained)
         model_dict = model.state_dict()
 
-        keys = pretrained_dict.keys()
+        keys = deepcopy(pretrained_dict.keys())
 
         for key in keys:
             if key not in model_dict:
@@ -183,7 +184,7 @@ def resnet101(args):
         pretrained_dict = torch.load(args.pretrained)
         model_dict = model.state_dict()
 
-        keys = pretrained_dict.keys()
+        keys = deepcopy(pretrained_dict).keys()
 
         for key in keys:
             if key not in model_dict:
