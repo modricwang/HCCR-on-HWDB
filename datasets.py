@@ -43,12 +43,12 @@ class HCCRTrainSet(data.Dataset):
                     self.images.append(os.path.join(path, image))
                     self.targets.append(int(path.split('\\')[-1]))
 
-
     def __getitem__(self, index):
         image = cv2.imread(self.images[index])
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         image = cv2.resize(image, (224, 224))
+        image = image.transpose((2, 0, 1))
 
         return (image, self.targets[index])
 
@@ -72,6 +72,8 @@ class HCCRTestSet(data.Dataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         image = cv2.resize(image, (224, 224))
+
+        image = image.transpose((2, 0, 1))
 
         return (image, self.targets[index])
 
