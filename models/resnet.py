@@ -101,8 +101,8 @@ class ResNet(nn.Module):
         self.avgpool = nn.AvgPool2d(7, stride=1)
 
         self.fc1 = nn.Linear(512 * block.expansion, 1024 * block.expansion)
-        self.fc2 = nn.Linear(1024 * block.expansion, 2048 * block.expansion)
-        self.fc3 = nn.Linear(2048 * block.expansion, args.output_classes)
+        self.fc2 = nn.Linear(1024 * block.expansion, 1024 * block.expansion)
+        self.fc3 = nn.Linear(1024 * block.expansion, args.output_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -142,9 +142,10 @@ class ResNet(nn.Module):
 
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        y = self.color_fc(x)
-        z = self.type_fc(x)
-        return y, z
+        x = self.fc1(x)
+        x = self.fc2(x)
+        x = self.fc3(x)
+        return x
 
 
 def resnet50(args):
