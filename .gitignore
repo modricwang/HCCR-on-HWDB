@@ -1,4 +1,5 @@
 
-.idea/*
-.data/*
+.idea/
 data/
+
+pretrain/
