@@ -2,6 +2,7 @@ import os
 import numpy as np
 import struct
 from PIL import Image
+import pickle
 
 data_dir = './data'
 train_data_dir = os.path.join(data_dir, 'train_raw')
@@ -38,11 +39,10 @@ for _, tagcode in read_from_gnt_dir(gnt_dir=train_data_dir):
 char_list = list(char_set)
 char_dict = dict(zip(sorted(char_list), range(len(char_list))))
 print(len(char_dict))
-import pickle
 
-f = open('char_dict', 'wb')
-pickle.dump(char_dict, f)
-f.close()
+char_dict_outfile = open('char_dict', 'wb')
+pickle.dump(char_dict, char_dict_outfile)
+char_dict_outfile.close()
 
 train_counter = 0
 test_counter = 0
