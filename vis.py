@@ -3,8 +3,9 @@ import numpy as np
 import os
 import time
 
-y_field_list = ["LR", "Loss", "Acc"]
-
+y_field_list = [ "Loss", "Acc"]
+y_field_list.sort()
+print(y_field_list)
 smooth_len = 100
 
 
@@ -62,9 +63,11 @@ class Drawing():
     def update(self, log_info_map):
         for log_name in sorted(log_info_map.keys()):
             result_list = log_info_map[log_name]
-            envs = "{}_{}".format(self.envs, log_name.split('/')[-2])
-            # envs = self.envs
-            win = '/'.join(log_name.split('/')[1:])
+            # envs = "{}_{}".format(self.envs, log_name.split('/')[-2])
+            envs = self.envs
+            win = log_name.split('/')[-1]
+            # win = log_name
+            print(log_name, win,len(result_list[0]),len(result_list[1]))
             self.vis.line(X=np.array(result_list[0]), Y=np.array(result_list[1]),
                           env=envs, win=win, opts=dict(title=win))
 
