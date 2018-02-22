@@ -4,3 +4,5 @@ data/
 
 pretrain/
 *.pyc
+model.txt
+*.log
