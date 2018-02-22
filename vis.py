@@ -13,12 +13,12 @@ def smooth(x, smooth_len=10):
         return x
     box = np.ones(smooth_len) / smooth_len
     x_smooth = np.convolve(x, box, mode='same')
-    for i in range(smooth_len / 2 + 1):
+    for i in range(int(smooth_len / 2 + 1)):
         start = 0
-        end = i + smooth_len / 2
+        end = int(i + smooth_len / 2)
         x_smooth[i] = np.sum(x[start:end]) * 1.0 / (end - start)
-    for i in range(-1, -smooth_len / 2, -1):
-        start = i - smooth_len / 2
+    for i in range(-1, int(-smooth_len / 2), -1):
+        start = int(i - smooth_len / 2)
         x_smooth[i] = np.sum(x[start:]) * 1.0 / (-start)
     return x_smooth
 
@@ -54,7 +54,7 @@ def parse_log(log):
 
 
 class Drawing():
-    def __init__(self, envs='car-attr-slimming', port=9000):
+    def __init__(self, envs='HCCR', port=9000):
         self.vis = visdom.Visdom()
         self.vis.port = port
         self.envs = envs
@@ -69,12 +69,11 @@ class Drawing():
                           env=envs, win=win, opts=dict(title=win))
 
 
-
 drawer = Drawing(port=12306)
 while True:
     draw_info = {}
     jobnames = {
-        './train/log',
+        './train.log',
     }
     for jobname in jobnames:
         log_path = jobname.split('/')[-1]
