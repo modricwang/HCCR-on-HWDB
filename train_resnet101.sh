@@ -12,7 +12,7 @@ python -u main.py \
     -n_epochs 150 \
     -learn_rate 0.003 \
     -pretrained ./pretrain/resnet101-5d3b4d8f.pth \
-    -batch_size 64 \
-    -workers 32 \
+    -batch_size 8 \
+    -workers 2 \
     -nGPU 1 \
 2>&1 | tee train.log
