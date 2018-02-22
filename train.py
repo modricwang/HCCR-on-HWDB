@@ -93,7 +93,7 @@ class Trainer:
 
             batch_size = target.size(0)
             input_var = Variable(input_tensor)
-            target_var = Variable(target)
+            # target_var = Variable(target)
 
             output = model(input_var)
 
