@@ -46,6 +46,9 @@ def create_model(args):
         model.load_state_dict(checkpoint['model'])
         state = checkpoint['state']
 
+
+    # torch.set_num_threads(args.nGPU)
+
     if args.nGPU > 0:
         cudnn.benchmark = True
         if args.nGPU > 1:
@@ -84,6 +87,7 @@ def main():
     else:
         start_epoch = logger.state['epoch'] + 1
         print("=> Start training")
+        # test_summary = trainer.test(0, val_loader)
 
         for epoch in range(start_epoch, args.n_epochs + 1):
             train_summary = trainer.train(epoch, train_loader)
