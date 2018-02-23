@@ -51,7 +51,7 @@ class Logger:
             torch.save(checkpoint, model_file)
 
             keys = train_summary.keys()
-            keys.sort()
+            keys = sorted(keys)
             train_rec = [train_summary[key] for key in keys]
 
         if test_summary:
