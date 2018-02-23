@@ -66,7 +66,7 @@ class Logger:
                 torch.save({'best': epoch}, best)
 
             keys = test_summary.keys()
-            keys.sort()
+            keys = sorted(keys)
             test_rec = [test_summary[key] for key in keys]
 
         if self.train_record is not None:
