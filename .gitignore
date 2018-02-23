@@ -6,3 +6,4 @@ pretrain/
 *.pyc
 model.txt
 *.log
+*.pth
