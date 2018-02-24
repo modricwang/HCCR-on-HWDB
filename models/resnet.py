@@ -155,7 +155,7 @@ def resnet18(args):
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
     if args.pretrained:
-        model = ResNet(Bottleneck, [2, 2, 2, 2], args)
+        model = ResNet(BasicBlock, [2, 2, 2, 2], args)
         pretrained_dict = torch.load(args.pretrained)
         model_dict = model.state_dict()
 
@@ -171,7 +171,7 @@ def resnet18(args):
 
         return model
 
-    return ResNet(Bottleneck, [2, 2, 2, 2], args)
+    return ResNet(BasicBlock, [2, 2, 2, 2], args)
 
 
 def resnet50(args):
