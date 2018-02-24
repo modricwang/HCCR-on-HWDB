@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch.backends.cudnn as cudnn
 
 from opts import args
-from models.resnet import resnet101
+from models.resnet import resnet101, resnet18
 from datasets import get_train_loader
 from datasets import get_test_loader
 from log import Logger
@@ -14,6 +14,7 @@ import torch
 def get_catalogue():
     model_creators = dict()
     model_creators['resnet101'] = resnet101
+    model_creators['resnet18'] = resnet18
     return model_creators
 
 
@@ -45,7 +46,6 @@ def create_model(args):
 
         model.load_state_dict(checkpoint['model'])
         state = checkpoint['state']
-
 
     # torch.set_num_threads(args.nGPU)
 

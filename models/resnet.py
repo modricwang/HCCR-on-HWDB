@@ -4,7 +4,7 @@ import math
 import torch.utils.model_zoo as model_zoo
 from copy import deepcopy
 
-__all__ = ['Bottleneck', 'ResNet', 'resnet50', 'resnet101', 'resnet152']
+__all__ = ['Bottleneck', 'ResNet', 'resnet18', 'resnet50', 'resnet101', 'resnet152']
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -146,6 +146,32 @@ class ResNet(nn.Module):
         x = self.fc2(x)
         x = self.fc3(x)
         return x
+
+
+def resnet18(args):
+    """Constructs a ResNet-101 model.
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    if args.pretrained:
+        model = ResNet(Bottleneck, [2, 2, 2, 2], args)
+        pretrained_dict = torch.load(args.pretrained)
+        model_dict = model.state_dict()
+
+        keys = deepcopy(pretrained_dict).keys()
+
+        for key in keys:
+            if key not in model_dict:
+                print(key)
+                del pretrained_dict[key]
+
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(model_dict)
+
+        return model
+
+    return ResNet(Bottleneck, [2, 2, 2, 2], args)
 
 
 def resnet50(args):
