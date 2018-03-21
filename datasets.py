@@ -71,7 +71,7 @@ class HCCRTrainSet(data.Dataset):
 
         image2 = np.ndarray(shape=(224, 224), dtype=float)
 
-        print(image.shape[0])
+        # print(image.shape[0])
         delta0 = 224 - image.shape[0]
         delta1 = 224 - image.shape[1]
         image2 = cv2.copyMakeBorder(image, delta0 // 2, delta0 - delta0 // 2, delta1 // 2, delta1 - delta1 // 2,
