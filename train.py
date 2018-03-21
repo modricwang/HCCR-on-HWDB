@@ -97,17 +97,17 @@ class Trainer:
 
             output = model(input_var)
 
-            acc = self.accuracy(output.data, target)
+            acc, acc_top10 = self.accuracy(output.data, target, (1, 10))
 
             acc_avg += acc * batch_size
 
             total += batch_size
 
-            print("| Test[%d] [%d/%d]  Acc %6.3f  " % (
+            print("| Test[%d] [%d/%d]  Acc %6.3f Acc-Top10 %6.3d" % (
                 epoch,
                 i + 1,
                 n_batches,
-                acc))
+                acc, acc_top10))
 
         acc_avg /= total
 
@@ -121,17 +121,32 @@ class Trainer:
 
         return summary
 
-    def accuracy(self, output, target):
+    # def accuracy(self, output, target):
+    #
+    #     batch_size = target.size(0)
+    #
+    #     _, pred = torch.max(output, 1)
+    #
+    #     correct = pred.eq(target).float().sum(0)
+    #
+    #     correct.mul_(100. / batch_size)
+    #
+    #     return correct[0]
 
+    def accuracy(self, output, target, topk=(1,)):
+        """Computes the precision@k for the specified values of k"""
+        maxk = max(topk)
         batch_size = target.size(0)
 
-        _, pred = torch.max(output, 1)
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        correct = pred.eq(target.view(1, -1).expand_as(pred))
 
-        correct = pred.eq(target).float().sum(0)
-
-        correct.mul_(100. / batch_size)
-
-        return correct[0]
+        res = []
+        for k in topk:
+            correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
+            res.append(correct_k.mul_(100.0 / batch_size))
+        return res
 
     def learning_rate(self, epoch):
         decay = 0.1 ** int((epoch - 1) / 3)

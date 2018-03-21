@@ -43,19 +43,20 @@ class HCCRTrainSet(data.Dataset):
                     self.images.append(os.path.join(path, image))
                     self.targets.append(int(path.split('\\')[-1]))
 
-        self.mean = [0.485, 0.456, 0.406]
-        self.dev = [0.229, 0.224, 0.225]
+        # self.mean = [0.485, 0.456, 0.406]
+        # self.dev = [0.229, 0.224, 0.225]
+        #
+        # self.transform = transforms.Compose([
+        #     transforms.ToTensor(),
+        #     transforms.Normalize(mean=self.mean, std=self.dev)])
 
-        self.transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(mean=self.mean, std=self.dev)])
-
+        self.transform = transforms.ToTensor()
 
     def __getitem__(self, index):
         image = cv2.imread(self.images[index])
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.cvtColor(image, cv2.IMREAD_GRAYSCALE)
 
-        image = cv2.resize(image, (224, 224))
+        # image = cv2.resize(image, (224, 224))
         # image = image.transpose((2, 0, 1))
 
         image = self.transform(image)
