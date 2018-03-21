@@ -159,19 +159,17 @@ def resnet18(args):
     if args.pretrained:
         model = ResNet(BasicBlock, [2, 2, 2, 2], args)
         pretrained_dict = torch.load(args.pretrained)
-        model_dict = model.state_dict()
+        # model_dict = model.state_dict()
 
-        keys = deepcopy(pretrained_dict).keys()
+        # keys = deepcopy(pretrained_dict).keys()
 
-        for key in keys:
-            if key not in model_dict:
-                print(key)
-                del pretrained_dict[key]
+        # for key in keys:
+        #     if key not in model_dict:
+        #         print(key)
+        #         del pretrained_dict[key]
 
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
-
-        return model
+        # model_dict.update(pretrained_dict)
+        model.load_state_dict(pretrained_dict, strict=False)
 
     return ResNet(BasicBlock, [2, 2, 2, 2], args)
 
@@ -211,17 +209,17 @@ def resnet101(args):
     if args.pretrained:
         model = ResNet(Bottleneck, [3, 4, 23, 3], args)
         pretrained_dict = torch.load(args.pretrained)
-        model_dict = model.state_dict()
+        # model_dict = model.state_dict()
 
-        keys = deepcopy(pretrained_dict).keys()
+        # keys = deepcopy(pretrained_dict).keys()
 
-        for key in keys:
-            if key not in model_dict:
-                print(key)
-                del pretrained_dict[key]
+        # for key in keys:
+        #     if key not in model_dict:
+        #         print(key)
+        #         del pretrained_dict[key]
 
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
+        # model_dict.update(pretrained_dict)
+        model.load_state_dict(pretrained_dict, strict=False)
 
         return model
 
