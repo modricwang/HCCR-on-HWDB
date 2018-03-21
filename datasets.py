@@ -9,6 +9,11 @@ from torch.utils.data.sampler import Sampler
 from torchvision import datasets, transforms
 import torch.utils.data as data
 
+def my_collate(batch):
+    data = [item[0] for item in batch]
+    target = [item[1] for item in batch]
+    target = torch.LongTensor(target)
+    return [data, target]
 
 def get_train_loader(args):
     dataset = HCCRTrainSet(args)
@@ -18,6 +23,7 @@ def get_train_loader(args):
         batch_size=args.batch_size,
         shuffle=args.shuffle,
         num_workers=args.workers,
+        collate_fn=my_collate,
         pin_memory=True)
 
 
@@ -29,6 +35,7 @@ def get_test_loader(args):
         batch_size=args.batch_size,
         shuffle=args.shuffle,
         num_workers=args.workers,
+        collate_fn=my_collate,
         pin_memory=True)
 
 
