@@ -1,6 +1,6 @@
 import os
 import cv2
-import numpy
+import numpy as np
 import random
 import torch
 
@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.sampler import Sampler
 from torchvision import datasets, transforms
 import torch.utils.data as data
+
 
 # def my_collate(batch):
 #     data = [item[0] for item in batch]
@@ -62,6 +63,7 @@ class HCCRTrainSet(data.Dataset):
     def __getitem__(self, index):
         image = cv2.imread(self.images[index])
         image = cv2.cvtColor(image, cv2.IMREAD_GRAYSCALE)
+        image = np.expand_dims(image, axis=0)
 
         # image = cv2.resize(image, (224, 224))
         # image = image.transpose((2, 0, 1))
