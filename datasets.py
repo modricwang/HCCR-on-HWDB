@@ -61,12 +61,13 @@ class HCCRTrainSet(data.Dataset):
         self.transform = transforms.ToTensor()
 
     def __getitem__(self, index):
-        image = cv2.imread(self.images[index])
-        image = cv2.cvtColor(image, cv2.IMREAD_GRAYSCALE)
-        image = np.expand_dims(image, axis=0)
+        image = cv2.imread(self.images[index], cv2.IMREAD_GRAYSCALE)
+        # image = cv2.cvtColor(image, cv2.IMREAD_GRAYSCALE)
+        image = np.expand_dims(image, axis=2)
 
         # image = cv2.resize(image, (224, 224))
         # image = image.transpose((2, 0, 1))
+
 
         image = self.transform(image)
 
@@ -95,12 +96,13 @@ class HCCRTestSet(data.Dataset):
             transforms.Normalize(mean=self.mean, std=self.dev)])
 
     def __getitem__(self, index):
-        image = cv2.imread(self.images[index])
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.imread(self.images[index], cv2.IMREAD_GRAYSCALE)
+        # image = cv2.cvtColor(image, cv2.IMREAD_GRAYSCALE)
+        image = np.expand_dims(image, axis=2)
 
-        image = cv2.resize(image, (224, 224))
-
+        # image = cv2.resize(image, (224, 224))
         # image = image.transpose((2, 0, 1))
+
 
         image = self.transform(image)
 

@@ -46,19 +46,24 @@ class Trainer:
             loss.backward()
             self.optimizer.step()
 
-            acc = self.accuracy(output.data, target)
+            acc, acc_top10 = self.accuracy(output.data, target, (1, 10))
 
             acc_avg += acc * batch_size
+            acc_top10_avg = acc_top10 * batch_size
 
             loss_avg += loss.data[0] * batch_size
             total += batch_size
 
-            print("| Epoch[%d] [%d/%d]  Loss %1.4f  Acc %6.3f " % (
-                epoch,
-                i + 1,
-                n_batches,
-                loss.data[0],
-                acc))
+            if i * 1000 == 0:
+                print("| Epoch[%d] [%d/%d]  Loss %1.4f  Acc %6.3f Acc-Top10 %6.3f" % (
+                    epoch,
+                    i + 1,
+                    n_batches,
+                    loss_avg / total,
+                    acc_avg / total, acc_top10_avg / total))
+                loss_avg = 0
+                acc_avg = 0
+                acc_top10_avg = 0
 
         loss_avg /= total
         acc_avg /= total
