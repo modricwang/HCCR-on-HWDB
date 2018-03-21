@@ -63,15 +63,35 @@ class HCCRTrainSet(data.Dataset):
     def __getitem__(self, index):
         image = cv2.imread(self.images[index], cv2.IMREAD_GRAYSCALE)
         # image = cv2.cvtColor(image, cv2.IMREAD_GRAYSCALE)
-        image = np.expand_dims(image, axis=2)
+
+        max_len = max(image.shape[0], image.shape[1])
+        scale_rate = 224.0 / max_len
+        image = cv2.resize(image, (int(image.shape[0] * scale_rate), int(image.shape[1] * scale_rate)))
+        # print(type(image))
+
+        image2 = np.ndarray(shape=(224, 224), dtype=float)
+
+        print(image.shape[0])
+        delta0 = 224 - image.shape[0]
+        delta1 = 224 - image.shape[1]
+        image2 = cv2.copyMakeBorder(image, delta0 // 2, delta0 - delta0 // 2, delta1 // 2, delta1 - delta1 // 2,
+                                    cv2.BORDER_CONSTANT, value=0)
+        # image2 = np.zeros((224, 224))
+        # image2.data[112 - image.shape[0] / 2:112 + image.shape[0] / 2,
+        # 112 - image.shape[1] / 2:112 + image.shape[1] / 2] = image
+
+        # cv2.resize(image, image2, )
+
+        image2 = np.expand_dims(image2, axis=2)
+
+        # print(image2.shape)
 
         # image = cv2.resize(image, (224, 224))
         # image = image.transpose((2, 0, 1))
 
+        image2 = self.transform(image2)
 
-        image = self.transform(image)
-
-        return (image, self.targets[index])
+        return image2, self.targets[index]
 
     def __len__(self):
         return len(self.targets)
@@ -102,7 +122,6 @@ class HCCRTestSet(data.Dataset):
 
         # image = cv2.resize(image, (224, 224))
         # image = image.transpose((2, 0, 1))
-
 
         image = self.transform(image)
 

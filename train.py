@@ -20,6 +20,7 @@ class Trainer:
         n_batches = len(train_loader)
 
         acc_avg = 0
+        acc_top10_avg = 0
 
         loss_avg = 0
         total = 0
@@ -49,7 +50,7 @@ class Trainer:
             acc, acc_top10 = self.accuracy(output.data, target, (1, 10))
 
             acc_avg += acc * batch_size
-            acc_top10_avg = acc_top10 * batch_size
+            acc_top10_avg += acc_top10 * batch_size
 
             loss_avg += loss.data[0] * batch_size
             total += batch_size
