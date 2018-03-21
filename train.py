@@ -55,7 +55,7 @@ class Trainer:
             loss_avg += loss.data[0] * batch_size
             total += batch_size
 
-            if i * 1000 == 0:
+            if i % 1000 == 0:
                 print("| Epoch[%d] [%d/%d]  Loss %1.4f  Acc %6.3f Acc-Top10 %6.3f" % (
                     epoch,
                     i + 1,
