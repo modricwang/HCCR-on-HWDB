@@ -73,15 +73,26 @@ class HCCRTrainSet(data.Dataset):
 
         # print(image.shape[0])
         delta0 = 224 - image.shape[0]
+        random_offset0 = random.randint(-delta0 // 2 , delta0 // 2)
         delta1 = 224 - image.shape[1]
-        image2 = cv2.copyMakeBorder(image, delta0 // 2, delta0 - delta0 // 2, delta1 // 2, delta1 - delta1 // 2,
+        random_offset1 = random.randint(-delta1 // 2 , delta1 // 2)
+        image2 = cv2.copyMakeBorder(image, delta0 // 2 + random_offset0, delta0 - delta0 // 2 - random_offset0, delta1 // 2 + random_offset1, delta1 - delta1 // 2 - random_offset1,
                                     cv2.BORDER_CONSTANT, value=255)
+        
+        # random rotating here
+        image = cv2.bitwise_not(image)
+        rows,cols = img.shape
+        M = cv2.getRotationMatrix2D((cols/2,rows/2),random.randint(-15,15),1)
+        image = cv2.warpAffine(image,M,(cols,rows))
+        image = cv2.bitwise_not(image)
+
+
         # image2 = np.zeros((224, 224))
         # image2.data[112 - image.shape[0] / 2:112 + image.shape[0] / 2,
         # 112 - image.shape[1] / 2:112 + image.shape[1] / 2] = image
 
         # cv2.resize(image, image2, )
-        cv2.threshold(image2, 224, 255, cv2.THRESH_BINARY, image2)
+        #cv2.threshold(image2, 224, 255, cv2.THRESH_BINARY, image2)
         # cv2.imwrite('data/sample/%d.jpg' % (index), image2)
         image2 = np.expand_dims(image2, axis=2)
 
@@ -109,12 +120,14 @@ class HCCRTestSet(data.Dataset):
                     self.images.append(os.path.join(path, image))
                     self.targets.append(int(path.split('\\')[-1]))
 
-        self.mean = [0.485, 0.456, 0.406]
-        self.dev = [0.229, 0.224, 0.225]
+        # self.mean = [0.485, 0.456, 0.406]
+        # self.dev = [0.229, 0.224, 0.225]
+        #
+        # self.transform = transforms.Compose([
+        #     transforms.ToTensor(),
+        #     transforms.Normalize(mean=self.mean, std=self.dev)])
 
-        self.transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(mean=self.mean, std=self.dev)])
+        self.transform = transforms.ToTensor()
 
     def __getitem__(self, index):
         image = cv2.imread(self.images[index], cv2.IMREAD_GRAYSCALE)
@@ -140,6 +153,7 @@ class HCCRTestSet(data.Dataset):
         cv2.threshold(image2, 224, 255, cv2.THRESH_BINARY, image2)
         # cv2.imwrite('data/sample/%d.jpg' % (index), image2)
         image2 = np.expand_dims(image2, axis=2)
+
         # print(image2.shape)
 
         # image = cv2.resize(image, (224, 224))
@@ -147,5 +161,8 @@ class HCCRTestSet(data.Dataset):
 
         image2 = self.transform(image2)
 
+        return image2, self.targets[index]
+
     def __len__(self):
         return len(self.targets)
+
