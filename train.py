@@ -1,6 +1,7 @@
 import torch
 import torch.optim as optim
 from torch.autograd import Variable
+import pickle
 
 
 class Trainer:
@@ -65,6 +66,7 @@ class Trainer:
                 loss_avg = 0
                 acc_avg = 0
                 acc_top10_avg = 0
+                total = 0
 
         loss_avg /= total
         acc_avg /= total
@@ -82,6 +84,10 @@ class Trainer:
         return summary
 
     def test(self, epoch, test_loader):
+
+        targets = []
+        outputs = []
+
         n_batches = len(test_loader)
 
         acc_avg = 0
@@ -109,7 +115,7 @@ class Trainer:
 
             total += batch_size
 
-            print("| Test[%d] [%d/%d]  Acc %6.3f Acc-Top10 %6.3d" % (
+            print("| Test[%d] [%d/%d]  Acc %6.3f Acc-Top10 %6.3f" % (
                 epoch,
                 i + 1,
                 n_batches,
@@ -151,7 +157,9 @@ class Trainer:
         res = []
         for k in topk:
             correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
-            res.append(correct_k.mul_(100.0 / batch_size))
+            # print(correct_k)
+
+            res.append(correct_k.mul_(100.0 / batch_size)[0])
         return res
 
     def learning_rate(self, epoch):

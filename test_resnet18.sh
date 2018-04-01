@@ -2,8 +2,6 @@
 
 mkdir checkpoints
 
-
-
 python -u main.py \
     -shuffle \
     -train_record \
@@ -12,9 +10,11 @@ python -u main.py \
     -save_path checkpoints \
     -output_classes 3755 \
     -n_epochs 150 \
-    -learn_rate 0.001 \
-    -pretrained ./pretrain/resnet18-5c106cde.pth \
+    -learn_rate 0.01 \
     -batch_size 128 \
     -workers 0 \
     -nGPU 2 \
+    -test_only \
+    -ckpt 14 \
 2>&1 | tee train.log
+#-pretrained ./pretrain/resnet18-5c106cde.pth \

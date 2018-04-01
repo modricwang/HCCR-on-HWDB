@@ -7,6 +7,7 @@ parser.add_argument('-shuffle', action='store_true', help='Reshuffle data at eac
 parser.add_argument('-small_set', action='store_true', help='Whether uses a small dataset')
 parser.add_argument('-train_record', action='store_true', help='Path to save train record')
 parser.add_argument('-test_only', action='store_true', help='Only conduct test on the validation set')
+parser.add_argument('-ckpt', default=0, type=int, help='Choose the checkpoint to run')
 
 parser.add_argument('-model', required=True, help='Model type when we create a new one')
 parser.add_argument('-data_dir', required=True, help='Path to data directory')

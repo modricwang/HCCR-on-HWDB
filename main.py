@@ -41,6 +41,9 @@ def create_model(args):
         latest = torch.load(os.path.join(save_path, 'latest.pth'))
         latest = latest['latest']
 
+        if args.ckpt > 0:
+            latest = args.ckpt
+
         checkpoint = os.path.join(save_path, 'model_%d.pth' % latest)
         checkpoint = torch.load(checkpoint)
 

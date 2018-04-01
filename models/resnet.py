@@ -89,7 +89,7 @@ class ResNet(nn.Module):
     def __init__(self, block, layers, args):
         self.inplanes = 64
         super(ResNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -99,7 +99,6 @@ class ResNet(nn.Module):
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(7, stride=1)
-        # self.avgpool = nn.AdaptiveAvgPool2d(1)
 
         self.fc1 = nn.Linear(512 * block.expansion, 1024 * block.expansion)
         self.fc2 = nn.Linear(1024 * block.expansion, 1024 * block.expansion)
@@ -131,7 +130,6 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        # print(x.size())
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -152,7 +150,6 @@ class ResNet(nn.Module):
 
 def resnet18(args):
     """Constructs a ResNet-101 model.
-
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
@@ -164,7 +161,7 @@ def resnet18(args):
         keys = deepcopy(pretrained_dict).keys()
 
         for key in keys:
-            if key not in model_dict or pretrained_dict[key].shape == (64, 3, 7, 7):
+            if key not in model_dict:
                 print(key)
                 del pretrained_dict[key]
 
@@ -178,7 +175,6 @@ def resnet18(args):
 
 def resnet50(args):
     """Constructs a ResNet-50 model.
-
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
@@ -204,7 +200,6 @@ def resnet50(args):
 
 def resnet101(args):
     """Constructs a ResNet-101 model.
-
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
@@ -216,7 +211,7 @@ def resnet101(args):
         keys = deepcopy(pretrained_dict).keys()
 
         for key in keys:
-            if key not in model_dict or pretrained_dict[key].shape == (64, 3, 7, 7):
+            if key not in model_dict:
                 print(key)
                 del pretrained_dict[key]
 
