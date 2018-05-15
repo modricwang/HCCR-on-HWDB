@@ -2,6 +2,7 @@ import torch
 import torch.optim as optim
 from torch.autograd import Variable
 import pickle
+import torch.cuda
 
 
 class Trainer:
@@ -76,6 +77,8 @@ class Trainer:
             loss_avg,
             acc_avg))
 
+        torch.cuda.empty_cache()
+
         summary = dict()
 
         summary['acc'] = acc_avg
@@ -126,6 +129,8 @@ class Trainer:
         print("\n=> Test[%d]  Acc %6.3f\n" % (
             epoch,
             acc_avg))
+
+        torch.cuda.empty_cache()
 
         summary = dict()
 

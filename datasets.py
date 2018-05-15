@@ -26,7 +26,7 @@ def get_test_loader(args):
 
     return DataLoader(
         dataset,
-        batch_size=args.batch_size,
+        batch_size=max(args.batch_size // 2, 1),
         shuffle=args.shuffle,
         num_workers=args.workers,
         pin_memory=True)
@@ -49,7 +49,6 @@ class HCCRTrainSet(data.Dataset):
         self.transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize(mean=self.mean, std=self.dev)])
-
 
     def __getitem__(self, index):
         image = cv2.imread(self.images[index])
